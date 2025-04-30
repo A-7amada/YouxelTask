@@ -1,6 +1,7 @@
 ﻿using Api.Models;
 using FileStorage.Application.Dtos;
 using FileStorage.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Api.Controllers
 {
 	[ApiController]
 	[Route("api/files")]
+	[Authorize]
 	public class FilesController : ControllerBase
 	{
 		private readonly IFileService _fileService;
