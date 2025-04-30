@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Api", "YouxelTask\YouxelTask.FileStorage.Api.csproj", "{B03E2E26-8972-4832-8892-DC9C811E4D65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Domain", "FileStorage.Domain\YouxelTask.FileStorage.Domain.csproj", "{73E77F18-A3D4-4757-B687-3F192C19A9B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Application", "FileStorage.Application\YouxelTask.FileStorage.Application.csproj", "{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Infrastructure", "FileStorage.Infrastructure\YouxelTask.FileStorage.Infrastructure.csproj", "{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B03E2E26-8972-4832-8892-DC9C811E4D65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B03E2E26-8972-4832-8892-DC9C811E4D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B03E2E26-8972-4832-8892-DC9C811E4D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B03E2E26-8972-4832-8892-DC9C811E4D65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73E77F18-A3D4-4757-B687-3F192C19A9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73E77F18-A3D4-4757-B687-3F192C19A9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73E77F18-A3D4-4757-B687-3F192C19A9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73E77F18-A3D4-4757-B687-3F192C19A9B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBE7D579-D3B9-414A-A79A-F7CDB97A9FDC}
+	EndGlobalSection
+EndGlobal
