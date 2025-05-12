@@ -5,10 +5,16 @@ using FileStorage.Domain.Services;
 using FileStorage.Infrastructure.Data;
 using FileStorage.Infrastructure.Repositories;
 using FileStorage.Infrastructure.Services;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Threading.RateLimiting;
+using YouxelTask.FileStorage.Infrastructure;
 using YouxelTask.FileStorage.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,8 +54,36 @@ builder.Services.AddSwaggerGen(c =>
 	});
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+	// Define a “fixed” window policy: 10 requests per minute per client
+	options.AddFixedWindowLimiter("fixed", opts =>
+	{
+		opts.PermitLimit = 10;                    // max requests per window
+		opts.Window = TimeSpan.FromMinutes(1);
+		opts.QueueLimit = 2;                     // queue up to 2 extra requests
+		opts.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+	});
+
+	// (Optionally) set a global default policy:
+	//options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+	//	RateLimitPartition.GetHeaderLimiter(
+	//		partitionKey: context.User.Identity?.Name ?? context.Connection.RemoteIpAddress?.ToString()!,
+	//		factory: _ => new FixedWindowRateLimiterOptions
+	//		{
+	//			PermitLimit = 100,
+	//			Window = TimeSpan.FromMinutes(5),
+	//			QueueLimit = 0
+	//		}));
+});
+
 builder.Services.AddDbContext<FileStorageDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//builder.Services.AddHealthChecks()
+//	.AddDbContextCheck<FileStorageDbContext>()
+//	.AddCheck("Custom Health Check", () => HealthCheckResult.Healthy("The service is healthy"))
+//	/*.AddRabbitMQ(builder.Configuration["RabbitMQ:ConnectionString"])*/;
 
 builder.Services.AddScoped<FileRepository, FileRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
@@ -90,7 +124,11 @@ builder.Services.AddAuthentication(x =>
 	x.IncludeErrorDetails = true;
 
 });
+builder.Services
+	.AddInfrastructure(builder.Configuration);
+
 var app = builder.Build();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 // Configure the HTTP request pipeline.
@@ -102,8 +140,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigins");
-
-app.MapControllers();
+app.UseHealthChecksUI(options =>
+{
+	options.UIPath = "/health-ui";         // dashboard at /health-ui
+});
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+}); 
+app.MapControllers().RequireRateLimiting("fixed");
 using (var scope = app.Services.CreateScope())
 {
 	var dbContext = scope.ServiceProvider.GetRequiredService<FileStorageDbContext>();
