@@ -78,11 +78,17 @@ builder.Services.AddAuthentication(x =>
 	x.SaveToken = true;
 	x.TokenValidationParameters = new TokenValidationParameters
 	{
+		ValidateIssuer = true,
+		ValidateAudience = true,
+		ValidateLifetime = true,
 		ValidateIssuerSigningKey = true,
+		ValidIssuer = builder.Configuration["Jwt:Issuer"],
+		ValidAudience = builder.Configuration["Jwt:Audience"],
 		IssuerSigningKey = new SymmetricSecurityKey(key),
-		ValidateIssuer = false,
-		ValidateAudience = false
+		
 	};
+	x.IncludeErrorDetails = true;
+
 });
 var app = builder.Build();
 app.UseAuthentication();

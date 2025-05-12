@@ -81,7 +81,9 @@ namespace YouxelTask.FileStorage.Api.Controllers
 				new Claim(ClaimTypes.Name, username)
 				}),
 				Expires = DateTime.UtcNow.AddMinutes(15),
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
+				Issuer = _configuration["Jwt:Issuer"],
+				Audience = _configuration["Jwt:Audience"]
 			};
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return tokenHandler.WriteToken(token);
@@ -104,14 +106,17 @@ namespace YouxelTask.FileStorage.Api.Controllers
 		private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
-			var key = Encoding.ASCII.GetBytes("your_secret_key");
+			var secretKey = _configuration["Jwt:SecretKey"];
+			var key = Encoding.ASCII.GetBytes(secretKey);
 			var tokenValidationParameters = new TokenValidationParameters
 			{
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateLifetime = false,
 				ValidateIssuerSigningKey = true,
+				ValidIssuer = _configuration["Jwt:Issuer"],
+				ValidAudience = _configuration["Jwt:Audience"],
 				IssuerSigningKey = new SymmetricSecurityKey(key),
-				ValidateIssuer = false,
-				ValidateAudience = false,
-				ValidateLifetime = false // Ignore expiration
 			};
 
 			var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
