@@ -76,14 +76,15 @@ builder.Services.AddRateLimiter(options =>
 	//			QueueLimit = 0
 	//		}));
 });
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+	options.Configuration = builder.Configuration.GetConnectionString("Redis");
+	options.InstanceName = "SampleApp_"; // Optional prefix for cache keys
+});
 
 builder.Services.AddDbContext<FileStorageDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddHealthChecks()
-//	.AddDbContextCheck<FileStorageDbContext>()
-//	.AddCheck("Custom Health Check", () => HealthCheckResult.Healthy("The service is healthy"))
-//	/*.AddRabbitMQ(builder.Configuration["RabbitMQ:ConnectionString"])*/;
 
 builder.Services.AddScoped<FileRepository, FileRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
@@ -142,7 +143,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigins");
 app.UseHealthChecksUI(options =>
 {
-	options.UIPath = "/health-ui";         // dashboard at /health-ui
+	options.UIPath = "/health-ui"; 
+	
 });
 app.MapHealthChecks("/health", new HealthCheckOptions
 {

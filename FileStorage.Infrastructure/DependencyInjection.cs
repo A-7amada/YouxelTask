@@ -23,14 +23,15 @@ namespace YouxelTask.FileStorage.Infrastructure
 			$"{configuration["RabbitMQ:Host"]}:" +
 			$"{configuration["RabbitMQ:Port"]}" +
 			$"{configuration["RabbitMQ:VirtualHost"]}";
-			services.AddSingleton<IConnection>(sp =>
-			{
-				var section = configuration.GetSection("RabbitMQ");                                     // {RabbitMQ} in appsettings.json :contentReference[oaicite:0]{index=0}
-				var uri = new Uri($"amqp://{section["Username"]}:{section["Password"]}" +
-								  $"@{section["Host"]}:{section["Port"]}{section["VirtualHost"]}");
-				var factory = new ConnectionFactory { Uri = uri, AutomaticRecoveryEnabled = true };     // reuse & auto-recover per RabbitMQ best practice :contentReference[oaicite:1]{index=1}
-				return factory.CreateConnection();
-			});
+
+			var redisHost = configuration["Redis:Host"];
+			var redisPort = configuration["Redis:Port"];
+			var redisPassword = configuration["Redis:Password"];
+
+			var redisConnectionString = string.IsNullOrEmpty(redisPassword)
+				? $"{redisHost}:{redisPort}"
+				: $"{redisHost}:{redisPort},password={redisPassword}";
+
 			services.AddHealthChecks()
 				.AddCheck("self", () => HealthCheckResult.Healthy("The service is healthy"))
 				.AddDbContextCheck<FileStorageDbContext>()
@@ -47,6 +48,13 @@ namespace YouxelTask.FileStorage.Infrastructure
 				failureStatus: HealthStatus.Unhealthy,        
 				tags: new[] { "mq", "rabbit" },     
 				timeout: TimeSpan.FromSeconds(5) 
+			)
+			.AddRedis(
+				redisConnectionString: redisConnectionString,
+				name: "redis",
+				failureStatus: HealthStatus.Unhealthy,
+				tags: new[] { "cache", "redis" },
+				timeout: TimeSpan.FromSeconds(5)
 			);
 
 			return services;
