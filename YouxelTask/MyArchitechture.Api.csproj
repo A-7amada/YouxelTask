@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FileStorage.Application\YouxelTask.FileStorage.Application.csproj" />
-    <ProjectReference Include="..\FileStorage.Infrastructure\YouxelTask.FileStorage.Infrastructure.csproj" />
+    <ProjectReference Include="..\FileStorage.Application\MyArchitechture.Application.csproj" />
+    <ProjectReference Include="..\FileStorage.Infrastructure\MyArchitechture.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

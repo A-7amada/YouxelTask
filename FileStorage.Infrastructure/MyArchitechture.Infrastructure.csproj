@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FileStorage.Domain\YouxelTask.FileStorage.Domain.csproj" />
+    <ProjectReference Include="..\FileStorage.Domain\MyArchitechture.Domain.csproj" />
   </ItemGroup>
 
 </Project>

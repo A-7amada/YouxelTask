@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35806.99 d17.13
+VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Api", "YouxelTask\YouxelTask.FileStorage.Api.csproj", "{B03E2E26-8972-4832-8892-DC9C811E4D65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyArchitechture.Api", "YouxelTask\MyArchitechture.Api.csproj", "{B03E2E26-8972-4832-8892-DC9C811E4D65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Domain", "FileStorage.Domain\YouxelTask.FileStorage.Domain.csproj", "{73E77F18-A3D4-4757-B687-3F192C19A9B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyArchitechture.Domain", "FileStorage.Domain\MyArchitechture.Domain.csproj", "{73E77F18-A3D4-4757-B687-3F192C19A9B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Application", "FileStorage.Application\YouxelTask.FileStorage.Application.csproj", "{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyArchitechture.Application", "FileStorage.Application\MyArchitechture.Application.csproj", "{E8386F50-DCFD-4BB9-9BE8-89D6A4C637A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouxelTask.FileStorage.Infrastructure", "FileStorage.Infrastructure\YouxelTask.FileStorage.Infrastructure.csproj", "{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyArchitechture.Infrastructure", "FileStorage.Infrastructure\MyArchitechture.Infrastructure.csproj", "{F3E17304-E20B-46A9-A7E8-5EC0129C1CA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
