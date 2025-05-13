@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyArchitechture.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +7,17 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using File = FileStorage.Domain.Entities.File;
-namespace FileStorage.Infrastructure.Data
+namespace MyArchitechture.Infrastructure.Data
 {
-	public class FileStorageDbContext : DbContext
+	public class DataDbContext : DbContext
 	{
-		public FileStorageDbContext(DbContextOptions<FileStorageDbContext> options) : base(options)
+		public DataDbContext(DbContextOptions<DataDbContext> options) : base(options)
 		{
 		}
 
+
 		public DbSet<File> Files { get; set; }
+		public DbSet<Employee> Employees { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

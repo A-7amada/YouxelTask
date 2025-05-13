@@ -1,18 +1,19 @@
-﻿using FileStorage.Infrastructure.Data;
-using FileStorage.Infrastructure.Repositories;
+﻿
 using Microsoft.EntityFrameworkCore;
+using MyArchitechture.Domain.Entities;
+using MyArchitechture.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using File = FileStorage.Domain.Entities.File;
-namespace YouxelTask.FileStorage.Infrastructure.Repositories
+namespace MyArchitechture.Infrastructure.Repositories
 {
-	public class FileRepository : GRepository<File>
+	public class FileRepository : GenericRepository<File>
 	{
-		private readonly FileStorageDbContext _dbContext;
-		public FileRepository(FileStorageDbContext dbContext) : base(dbContext)
+		private readonly DataDbContext _dbContext;
+		public FileRepository(DataDbContext dbContext) : base(dbContext)
 		{
 			_dbContext = dbContext;
 		}
@@ -31,6 +32,19 @@ namespace YouxelTask.FileStorage.Infrastructure.Repositories
 			}
 
 			return await query.ToListAsync();
+		}
+		public async Task<File?> GetByIdAsync(Guid id)
+		{
+			return await _dbContext.Files.FindAsync(id);
+		}
+		public async Task DeleteAsync(Guid id)
+		{
+			var entity = await GetByIdAsync(id);
+			if (entity != null)
+			{
+				_dbContext.Files.Remove(entity);
+				await _dbContext.SaveChangesAsync();
+			}
 		}
 	}
 }

@@ -1,9 +1,12 @@
-﻿using FileStorage.Infrastructure.Data;
+﻿using FileStorage.Domain.Repositories;
 using HealthChecks.RabbitMQ;
 using HealthChecks.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MyArchitechture.Domain.Entities;
+using MyArchitechture.Infrastructure.Data;
+using MyArchitechture.Infrastructure.Repositories;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -34,20 +37,20 @@ namespace YouxelTask.FileStorage.Infrastructure
 
 			services.AddHealthChecks()
 				.AddCheck("self", () => HealthCheckResult.Healthy("The service is healthy"))
-				.AddDbContextCheck<FileStorageDbContext>()
+				.AddDbContextCheck<DataDbContext>()
 				.AddSqlServer(
 					configuration["ConnectionStrings:DefaultConnection"],
 					name: "sql",
 					healthQuery: "SELECT 1;",
 					timeout: TimeSpan.FromSeconds(3))
-				// RabbitMQ check reusing our singleton IConnection
-				
+			// RabbitMQ check reusing our singleton IConnection
+
 			.AddRabbitMQ(
-				rabbitConnectionString: rabbitUri,           
-				name: "rabbitmq",                     
-				failureStatus: HealthStatus.Unhealthy,        
-				tags: new[] { "mq", "rabbit" },     
-				timeout: TimeSpan.FromSeconds(5) 
+				rabbitConnectionString: rabbitUri,
+				name: "rabbitmq",
+				failureStatus: HealthStatus.Unhealthy,
+				tags: new[] { "mq", "rabbit" },
+				timeout: TimeSpan.FromSeconds(5)
 			)
 			.AddRedis(
 				redisConnectionString: redisConnectionString,
@@ -56,7 +59,8 @@ namespace YouxelTask.FileStorage.Infrastructure
 				tags: new[] { "cache", "redis" },
 				timeout: TimeSpan.FromSeconds(5)
 			);
-
+			services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+			services.Decorate(typeof(IRepository<Employee>), typeof(CachingRepositoryDecorator<Employee>));
 			return services;
 
 

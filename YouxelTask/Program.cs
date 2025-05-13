@@ -2,8 +2,7 @@
 using FileStorage.Application.Services;
 using FileStorage.Domain.Repositories;
 using FileStorage.Domain.Services;
-using FileStorage.Infrastructure.Data;
-using FileStorage.Infrastructure.Repositories;
+
 using FileStorage.Infrastructure.Services;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,10 +11,11 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using MyArchitechture.Infrastructure.Data;
+using MyArchitechture.Infrastructure.Repositories;
 using System.Text;
 using System.Threading.RateLimiting;
 using YouxelTask.FileStorage.Infrastructure;
-using YouxelTask.FileStorage.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,7 +82,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 	options.InstanceName = "SampleApp_"; // Optional prefix for cache keys
 });
 
-builder.Services.AddDbContext<FileStorageDbContext>(options =>
+builder.Services.AddDbContext<DataDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -153,7 +153,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 app.MapControllers().RequireRateLimiting("fixed");
 using (var scope = app.Services.CreateScope())
 {
-	var dbContext = scope.ServiceProvider.GetRequiredService<FileStorageDbContext>();
+	var dbContext = scope.ServiceProvider.GetRequiredService<DataDbContext>();
 	dbContext.Database.EnsureCreated();
 }
 app.Run();

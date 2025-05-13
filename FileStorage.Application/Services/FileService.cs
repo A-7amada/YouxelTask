@@ -1,7 +1,7 @@
 ﻿using FileStorage.Application.Dtos;
 using FileStorage.Application.Interfaces;
 using FileStorage.Domain.Services;
-using YouxelTask.FileStorage.Infrastructure.Repositories;
+using MyArchitechture.Infrastructure.Repositories;
 using File = FileStorage.Domain.Entities.File;
 
 namespace FileStorage.Application.Services

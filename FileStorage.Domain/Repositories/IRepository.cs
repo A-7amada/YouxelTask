@@ -7,11 +7,15 @@ using FileStorage.Domain.Entities;
 using File = FileStorage.Domain.Entities.File;
 namespace FileStorage.Domain.Repositories
 {
-    public interface IRepository<T> where T : class
+	public interface IRepository<T> where T : class
 	{
-		Task<T> GetByIdAsync(Guid id);
-		Task<T> AddAsync(T file);
-		Task UpdateAsync(T file);
-		Task DeleteAsync(Guid id);
+		Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+		Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
+		IQueryable<T> Query();
+		Task<T> AddAsync(T entity, CancellationToken cancellationToken = default);
+		Task<bool> UpdateAsync(T entity, CancellationToken cancellationToken = default);
+		Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
+		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 	}
 }
+
