@@ -9,7 +9,7 @@ namespace YouxelTask.FileStorage.Domain.Entities
     public class Audited
     {
 		public string UploadedBy { get; set; }
-		public DateTime UploadedAt { get; set; }
+		public DateTime? UploadedAt { get; set; }
 		public DateTime? LastAccessed { get; set; }
 	}
 }

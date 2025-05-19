@@ -38,6 +38,9 @@ namespace MyArchitechture.Application.Services.Employee
 		public async Task<EmployeeDto> CreateAsync(EmployeeDto employeeDto)
 		{
 			var employee = _mapper.Map<MyArchitechture.Domain.Entities.Employee>(employeeDto);
+			employee.UploadedAt = DateTime.UtcNow;
+			employee.UploadedBy = "System"; 
+
 			var created = await _repository.AddAsync(employee, CancellationToken.None);
 			return _mapper.Map<EmployeeDto>(created);
 		}

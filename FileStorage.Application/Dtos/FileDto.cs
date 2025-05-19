@@ -13,7 +13,7 @@ namespace FileStorage.Application.Dtos
 		public string ContentType { get; set; }
 		public long Size { get; set; }
 		public string DownloadUrl { get; set; }
-		public DateTime UploadedAt { get; set; }
+		public DateTime? UploadedAt { get; set; }
 		
 	}
 }

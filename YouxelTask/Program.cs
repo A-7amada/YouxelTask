@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using MyArchitechture.Api;
+using MyArchitechture.Application.Interfaces;
+using MyArchitechture.Application.Services.Employee;
 using MyArchitechture.Infrastructure.Data;
 using MyArchitechture.Infrastructure.Repositories;
 using System.Text;
@@ -90,7 +93,7 @@ builder.Services.AddScoped<FileRepository, FileRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddSingleton<IStorageService, FileSystemStorageService>();
 builder.Services.AddSingleton<IMessageService, RabbitMQService>();
-
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowSpecificOrigins",
@@ -127,6 +130,9 @@ builder.Services.AddAuthentication(x =>
 });
 builder.Services
 	.AddInfrastructure(builder.Configuration);
+
+
+builder.Services.AddAutoMapper(typeof(CustomMappingProfile).Assembly);
 
 var app = builder.Build();
 app.UseRateLimiter();

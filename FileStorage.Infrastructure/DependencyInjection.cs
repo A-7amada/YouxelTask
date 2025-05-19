@@ -43,27 +43,32 @@ namespace YouxelTask.FileStorage.Infrastructure
 					name: "sql",
 					healthQuery: "SELECT 1;",
 					timeout: TimeSpan.FromSeconds(3))
-			// RabbitMQ check reusing our singleton IConnection
+				.AddRabbitMQ(
+					rabbitConnectionString: rabbitUri,
+					name: "rabbitmq",
+					failureStatus: HealthStatus.Unhealthy,
+					tags: new[] { "mq", "rabbit" },
+					timeout: TimeSpan.FromSeconds(5)
+				)
+				.AddRedis(
+					redisConnectionString: redisConnectionString,
+					name: "redis",
+					failureStatus: HealthStatus.Unhealthy,
+					tags: new[] { "cache", "redis" },
+					timeout: TimeSpan.FromSeconds(5)
+				);
 
-			.AddRabbitMQ(
-				rabbitConnectionString: rabbitUri,
-				name: "rabbitmq",
-				failureStatus: HealthStatus.Unhealthy,
-				tags: new[] { "mq", "rabbit" },
-				timeout: TimeSpan.FromSeconds(5)
-			)
-			.AddRedis(
-				redisConnectionString: redisConnectionString,
-				name: "redis",
-				failureStatus: HealthStatus.Unhealthy,
-				tags: new[] { "cache", "redis" },
-				timeout: TimeSpan.FromSeconds(5)
-			);
 			services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+
+			// Fix for CS7036: Provide the required setupAction parameter
+			services.AddStackExchangeRedisCache(options =>
+			{
+				options.Configuration = redisConnectionString;
+				options.InstanceName = "redis";
+			});
+			services.AddScoped<IRepository<Employee>, GenericRepository<Employee>>();
 			services.Decorate(typeof(IRepository<Employee>), typeof(CachingRepositoryDecorator<Employee>));
 			return services;
-
-
 		}
 	}
 }
